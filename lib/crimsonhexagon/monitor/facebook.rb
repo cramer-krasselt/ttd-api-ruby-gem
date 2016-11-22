@@ -1,7 +1,21 @@
-module Instagram
-  class Client
-    # Defines methods related to comments
-    module Comments
+require File.expand_path('../common', __FILE__)
+
+module CrimsonHexagon
+  module Monitor
+    class Facebook < API
+      include CrimsonHexagon::Monitor::Common
+
+      def list(team = nil)
+        options = {}
+        options.merge(team: team) if team
+        response = get("monitor/list", options)
+        response.monitors.select do |item|
+          item.type == "SOCIAL" &&
+            item.sources.any? { |src| src =~ /facebook/i }
+        end
+      end
+
+
       # Returns a list of comments for a given media item ID
       #
       # @overload media_comments(id)
@@ -15,8 +29,11 @@ module Instagram
       #   If getting this data of a protected user, you must be authenticated (and be allowed to see that user).
       # @rate_limited true
       # @see http://instagram.com/developer/endpoints/comments/#get_media_comments
-      def media_comments(id, *args)
-        response = get("media/#{id}/comments")
+      def admin_posts(id, start_date, end_date)
+        response = get("monitor/facebook/adminposts",
+                       id: id,
+                       start: start_date,
+                       end: end_date)
         response
       end
 
@@ -34,8 +51,11 @@ module Instagram
       #   If getting this data of a protected user, you must be authenticated (and be allowed to see that user).
       # @rate_limited true
       # @see http://instagram.com/developer/endpoints/comments/#post_media_comments
-      def create_media_comment(id, text, options={})
-        response = post("media/#{id}/comments", options.merge(:text => text), signature=true)
+      def page_likes(id, start_date, end_date)
+        response = get("monitor/facebook/pagelikes",
+                       id: id,
+                       start: start_date,
+                       end: end_date)
         response
       end
 
@@ -53,8 +73,11 @@ module Instagram
       #   In order to remove a comment, you must be the owner of the comment, the media item, or both.
       # @rate_limited true
       # @see http://instagram.com/developer/endpoints/comments/#delete_media_comments
-      def delete_media_comment(media_id, comment_id, options={})
-        response = delete("media/#{media_id}/comments/#{comment_id}", options, signature=true)
+      def total_activity(id, start_date, end_date)
+        response = get("monitor/facebook/totalactivity",
+                       id: id,
+                       start: start_date,
+                       end: end_date)
         response
       end
     end

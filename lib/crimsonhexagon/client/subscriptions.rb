@@ -1,7 +1,7 @@
 require 'openssl'
 require 'multi_json'
 
-module Instagram
+module CrimsonHexagon
   class Client
     # Defines methods related to real-time
     module Subscriptions

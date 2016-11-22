@@ -1,4 +1,4 @@
-module Instagram
+module CrimsonHexagon
   class Client
     # Defines methods related to real-time geographies
     module Geographies

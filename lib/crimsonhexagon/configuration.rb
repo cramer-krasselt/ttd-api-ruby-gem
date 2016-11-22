@@ -1,15 +1,15 @@
 require 'faraday'
 require File.expand_path('../version', __FILE__)
 
-module Instagram
+module CrimsonHexagon
   # Defines constants and methods related to configuration
   module Configuration
-    # An array of valid keys in the options hash when configuring a {Instagram::API}
+    # An array of valid keys in the options hash when configuring a {CrimsonHexagon::API}
     VALID_OPTIONS_KEYS = [
       :access_token,
       :adapter,
-      :client_id,
-      :client_secret,
+      :username,
+      :password,
       :client_ips,
       :connection_options,
       :scope,
@@ -32,10 +32,10 @@ module Instagram
     DEFAULT_ADAPTER = Faraday.default_adapter
 
     # By default, don't set an application ID
-    DEFAULT_CLIENT_ID = nil
+    DEFAULT_USERNAME = nil
 
     # By default, don't set an application secret
-    DEFAULT_CLIENT_SECRET = nil
+    DEFAULT_PASSWORD = nil
 
     # By default, don't set application IPs
     DEFAULT_CLIENT_IPS = nil
@@ -46,7 +46,7 @@ module Instagram
     # The endpoint that will be used to connect if none is set
     #
     # @note There is no reason to use any other endpoint at this time
-    DEFAULT_ENDPOINT = 'https://api.instagram.com/v1/'.freeze
+    DEFAULT_ENDPOINT = 'https://api.crimsonhexagon.com/api/'.freeze
 
     # The response format appended to the path and sent in the 'Accept' header if none is set
     #
@@ -66,7 +66,7 @@ module Instagram
     DEFAULT_NO_RESPONSE_WRAPPER = false
 
     # The user agent that will be sent to the API endpoint if none is set
-    DEFAULT_USER_AGENT = "Instagram Ruby Gem #{Instagram::VERSION}".freeze
+    DEFAULT_USER_AGENT = "CrimsonHexagon Ruby Gem #{CrimsonHexagon::VERSION}".freeze
 
     # An array of valid request/response formats
     #
@@ -104,8 +104,8 @@ module Instagram
     def reset
       self.access_token       = DEFAULT_ACCESS_TOKEN
       self.adapter            = DEFAULT_ADAPTER
-      self.client_id          = DEFAULT_CLIENT_ID
-      self.client_secret      = DEFAULT_CLIENT_SECRET
+      self.username           = DEFAULT_USERNAME
+      self.password           = DEFAULT_PASSWORD
       self.client_ips         = DEFAULT_CLIENT_IPS
       self.connection_options = DEFAULT_CONNECTION_OPTIONS
       self.scope              = DEFAULT_SCOPE

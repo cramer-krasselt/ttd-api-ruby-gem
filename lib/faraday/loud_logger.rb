@@ -30,8 +30,8 @@ module FaradayMiddleware
       private
 
       def filter(output)
-        if ENV['INSTAGRAM_GEM_REDACT']
-          output = output.to_s.gsub(/client_id=[a-zA-Z0-9]*/,'client_id=[CLIENT-ID]')
+        if ENV['CRIMSONHEXAGON_GEM_REDACT']
+          output = output.to_s.gsub(/username=[a-zA-Z0-9]*/,'username=[USERNAME]')
           output = output.to_s.gsub(/access_token=[a-zA-Z0-9]*/,'access_token=[ACCESS-TOKEN]')
         else
           output
