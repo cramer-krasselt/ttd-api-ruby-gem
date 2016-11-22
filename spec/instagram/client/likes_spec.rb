@@ -5,21 +5,21 @@ describe Instagram::Client do
     context ".new(:format => '#{format}')" do
 
       before do
-        @client = Instagram::Client.new(:format => format, :client_id => 'CID', :client_secret => 'CS', :client_ips => '1.2.3.4', :access_token => 'AT')
+        @client = Instagram::Client.new(:format => format, :client_id => 'CID', :client_secret => 'CS', :client_ips => '1.2.3.4', :auth => 'AT')
       end
 
       describe ".media_likes" do
 
         before do
           stub_get("media/777/likes.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             to_return(:body => fixture("media_likes.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
 
         it "should get the correct resource" do
           @client.media_likes(777)
           a_get("media/777/likes.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             should have_been_made
         end
 
@@ -34,14 +34,14 @@ describe Instagram::Client do
 
         before do
           stub_post("media/777/likes.#{format}").
-            with(:body => {:access_token => @client.access_token}).
+            with(:body => {:auth => @client.auth}).
             to_return(:body => fixture("media_liked.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
 
         it "should get the correct resource" do
           @client.like_media(777)
           a_post("media/777/likes.#{format}").
-            with(:body => {:access_token => @client.access_token}).
+            with(:body => {:auth => @client.auth}).
             should have_been_made
         end
       end
@@ -50,14 +50,14 @@ describe Instagram::Client do
 
         before do
           stub_delete("media/777/likes.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             to_return(:body => fixture("media_unliked.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
 
         it "should get the correct resource" do
           @client.unlike_media(777)
           a_delete("media/777/likes.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             should have_been_made
         end
       end

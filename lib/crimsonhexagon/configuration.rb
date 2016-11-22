@@ -6,7 +6,7 @@ module CrimsonHexagon
   module Configuration
     # An array of valid keys in the options hash when configuring a {CrimsonHexagon::API}
     VALID_OPTIONS_KEYS = [
-      :access_token,
+      :auth,
       :adapter,
       :username,
       :password,
@@ -102,7 +102,7 @@ module CrimsonHexagon
 
     # Reset all configuration options to defaults
     def reset
-      self.access_token       = DEFAULT_ACCESS_TOKEN
+      self.auth       = DEFAULT_ACCESS_TOKEN
       self.adapter            = DEFAULT_ADAPTER
       self.username           = DEFAULT_USERNAME
       self.password           = DEFAULT_PASSWORD

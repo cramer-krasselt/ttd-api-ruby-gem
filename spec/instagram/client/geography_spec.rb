@@ -4,7 +4,7 @@ describe Instagram::Client do
   Instagram::Configuration::VALID_FORMATS.each do |format|
     context ".new(:format => '#{format}')" do
       before do
-        @client = Instagram::Client.new(:format => format, :client_id => 'CID', :client_secret => 'CS', :access_token => 'AT')
+        @client = Instagram::Client.new(:format => format, :client_id => 'CID', :client_secret => 'CS', :auth => 'AT')
       end
 
       
@@ -14,14 +14,14 @@ describe Instagram::Client do
 
           before do
             stub_get("geographies/12345/media/recent.#{format}").
-              with(:query => {:access_token => @client.access_token}).
+              with(:query => {:auth => @client.auth}).
               to_return(:body => fixture("geography_recent_media.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
           end
 
           it "should get the correct resource" do
             @client.geography_recent_media(12345)
             a_get("geographies/12345/media/recent.#{format}").
-              with(:query => {:access_token => @client.access_token}).
+              with(:query => {:auth => @client.auth}).
               should have_been_made
           end
 

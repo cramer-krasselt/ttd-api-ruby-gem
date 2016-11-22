@@ -4,21 +4,21 @@ describe Instagram::Client do
   Instagram::Configuration::VALID_FORMATS.each do |format|
     context ".new(:format => '#{format}')" do
       before do
-        @client = Instagram::Client.new(:format => format, :client_id => 'CID', :client_secret => 'CS', :access_token => 'AT')
+        @client = Instagram::Client.new(:format => format, :client_id => 'CID', :client_secret => 'CS', :auth => 'AT')
       end
 
       describe ".media_item" do
 
         before do
           stub_get("media/18600493.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             to_return(:body => fixture("media.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
 
         it "should get the correct resource" do
           @client.media_item(18600493)
           a_get("media/18600493.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             should have_been_made
         end
 
@@ -32,14 +32,14 @@ describe Instagram::Client do
 
         before do
           stub_get('media/shortcode/BG9It').
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             to_return(:body => fixture("media_shortcode.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
 
         it "should get the correct resource" do
           @client.media_shortcode('BG9It')
           a_get('media/shortcode/BG9It').
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             should have_been_made
         end
 
@@ -53,14 +53,14 @@ describe Instagram::Client do
 
         before do
           stub_get("media/popular.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             to_return(:body => fixture("media_popular.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
 
         it "should get the correct resource" do
           @client.media_popular
           a_get("media/popular.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             should have_been_made
         end
 
@@ -75,7 +75,7 @@ describe Instagram::Client do
 
         before do
           stub_get("media/search.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             with(:query => {:lat => "37.7808851", :lng => "-122.3948632"}).
             to_return(:body => fixture("media_search.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
@@ -83,7 +83,7 @@ describe Instagram::Client do
         it "should get the correct resource" do
           @client.media_search("37.7808851", "-122.3948632")
           a_get("media/search.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             with(:query => {:lat => "37.7808851", :lng => "-122.3948632"}).
             should have_been_made
         end

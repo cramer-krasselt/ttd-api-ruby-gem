@@ -7,8 +7,6 @@ module FaradayMiddleware
   class CrimsonHexagonOAuth2 < Faraday::Middleware
     def call(env)
 
-      # TODO: if @access_token expired, refresh
-
       if env[:method] == :get or env[:method] == :delete
         if env[:url].query.nil?
           query = {}
@@ -16,9 +14,9 @@ module FaradayMiddleware
           query = Faraday::Utils.parse_query(env[:url].query)
         end
 
-        if @access_token and not query["password"]
-          env[:url].query = Faraday::Utils.build_query(query.merge(:auth => @access_token))
-          env[:request_headers] = env[:request_headers].merge('Authorization' => "Bearer #{@access_token}")
+        if @auth and not query["password"]
+          env[:url].query = Faraday::Utils.build_query(query.merge(:auth => @auth))
+          env[:request_headers] = env[:request_headers].merge('Authorization' => "Bearer #{@auth}")
         elsif @username && @password and not query["password"]
           env[:url].query = Faraday::Utils.build_query(query.merge({
             username: @username,
@@ -26,22 +24,22 @@ module FaradayMiddleware
           }))
         end
       else
-        if @access_token and not env[:body] && env[:body][:password]
+        if @auth and not env[:body] && env[:body][:password]
           env[:body] = {} if env[:body].nil?
-          env[:body] = env[:body].merge(:auth => @access_token)
-          env[:request_headers] = env[:request_headers].merge('Authorization' => "Bearer #{@access_token}")
+          env[:body] = env[:body].merge(:auth => @auth)
+          env[:request_headers] = env[:request_headers]
+            .merge('Authorization' => "Bearer #{@auth}")
         end
       end
-
 
       @app.call env
     end
 
-    def initialize(app, username, password, access_token=nil)
+    def initialize(app, username, password, auth=nil)
       @app = app
       @username = username
       @password = password
-      @access_token = access_token
+      @auth = auth
     end
   end
 end

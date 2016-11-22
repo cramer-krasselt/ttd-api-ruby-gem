@@ -14,7 +14,7 @@ module CrimsonHexagon
       }.merge(connection_options)
 
       Faraday::Connection.new(options) do |connection|
-        connection.use FaradayMiddleware::CrimsonHexagonOAuth2, username, password, access_token
+        connection.use FaradayMiddleware::CrimsonHexagonOAuth2, username, password, auth
         connection.use Faraday::Request::UrlEncoded
         connection.use FaradayMiddleware::Mashify unless raw
         unless raw

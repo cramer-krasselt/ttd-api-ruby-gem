@@ -4,21 +4,21 @@ describe Instagram::Client do
   Instagram::Configuration::VALID_FORMATS.each do |format|
     context ".new(:format => '#{format}')" do
       before do
-        @client = Instagram::Client.new(:format => format, :client_id => 'CID', :client_secret => 'CS', :access_token => 'AT')
+        @client = Instagram::Client.new(:format => format, :client_id => 'CID', :client_secret => 'CS', :auth => 'AT')
       end
 
       describe ".tag" do
 
         before do
           stub_get("tags/cat.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             to_return(:body => fixture("tag.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
 
         it "should get the correct resource" do
           @client.tag('cat')
           a_get("tags/cat.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             should have_been_made
         end
 
@@ -32,14 +32,14 @@ describe Instagram::Client do
 
         before do
           stub_get("tags/cat/media/recent.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             to_return(:body => fixture("tag_recent_media.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
 
         it "should get the correct resource" do
           @client.tag_recent_media('cat')
           a_get("tags/cat/media/recent.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             should have_been_made
         end
 
@@ -55,7 +55,7 @@ describe Instagram::Client do
 
         before do
           stub_get("tags/search.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             with(:query => {:q => 'cat'}).
             to_return(:body => fixture("tag_search.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
         end
@@ -63,7 +63,7 @@ describe Instagram::Client do
         it "should get the correct resource" do
           @client.tag_search('cat')
           a_get("tags/search.#{format}").
-            with(:query => {:access_token => @client.access_token}).
+            with(:query => {:auth => @client.auth}).
             with(:query => {:q => 'cat'}).
             should have_been_made
         end

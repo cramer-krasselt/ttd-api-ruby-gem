@@ -8,9 +8,9 @@ module CrimsonHexagon
     end
 
     # Return an access token from authorization
-    def get_access_token(options={})
+    def get_auth(options={})
       options["noExpiration"] ||= true
-      params = access_token_params.merge(options)
+      params = auth_params.merge(options)
       get("authenticate", params, signature=false, raw=false, unformatted=true, no_response_wrapper=true)
     end
 
@@ -22,7 +22,7 @@ module CrimsonHexagon
       }
     end
 
-    def access_token_params
+    def auth_params
       {
         :username => username,
         :password => password

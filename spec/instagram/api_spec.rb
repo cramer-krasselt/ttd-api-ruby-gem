@@ -30,7 +30,7 @@ describe Instagram::API do
 
       before do
         @configuration = {
-          :access_token => 'AT',
+          :auth => 'AT',
           :adapter => :typhoeus,
           :client_id => 'CID',
           :client_secret => 'CS',
@@ -166,27 +166,27 @@ describe Instagram::API do
     end
   end
 
-  describe ".get_access_token" do
+  describe ".get_auth" do
 
     describe "common functionality" do
       before do
         @client = Instagram::Client.new(:client_id => "CID", :client_secret => "CS")
-        @url = @client.send(:connection).build_url("/oauth/access_token/").to_s
+        @url = @client.send(:connection).build_url("/oauth/auth/").to_s
         stub_request(:post, @url).
           with(:body => {:client_id => "CID", :client_secret => "CS", :redirect_uri => "http://localhost:4567/oauth/callback", :grant_type => "authorization_code", :code => "C"}).
-          to_return(:status => 200, :body => fixture("access_token.json"), :headers => {})
+          to_return(:status => 200, :body => fixture("auth.json"), :headers => {})
       end
 
       it "should get the correct resource" do
-        @client.get_access_token(code="C", :redirect_uri => "http://localhost:4567/oauth/callback")
+        @client.get_auth(code="C", :redirect_uri => "http://localhost:4567/oauth/callback")
         a_request(:post, @url).
           with(:body => {:client_id => "CID", :client_secret => "CS", :redirect_uri => "http://localhost:4567/oauth/callback", :grant_type => "authorization_code", :code => "C"}).
           should have_been_made
       end
 
-      it "should return a hash with an access_token and user data" do
-        response = @client.get_access_token(code="C", :redirect_uri => "http://localhost:4567/oauth/callback")
-        response.access_token.should == "at"
+      it "should return a hash with an auth and user data" do
+        response = @client.get_auth(code="C", :redirect_uri => "http://localhost:4567/oauth/callback")
+        response.auth.should == "at"
         response.user.username.should == "mikeyk"
       end
     end
@@ -196,12 +196,12 @@ describe Instagram::API do
       before do
         @redirect_uri_config = "http://localhost:4567/oauth/callback_config"
         @client = Instagram::Client.new(:client_id => "CID", :client_secret => "CS", :redirect_uri => @redirect_uri_config)
-        @url = @client.send(:connection).build_url("/oauth/access_token/").to_s
+        @url = @client.send(:connection).build_url("/oauth/auth/").to_s
         stub_request(:post, @url)
       end
 
       it "should fall back to configuration redirect_uri if not passed as option" do
-        @client.get_access_token(code="C")
+        @client.get_auth(code="C")
         a_request(:post, @url).
           with(:body => hash_including({:redirect_uri => @redirect_uri_config})).
           should have_been_made
@@ -209,7 +209,7 @@ describe Instagram::API do
 
       it "should override configuration redirect_uri if passed as option" do
         redirect_uri_option = "http://localhost:4567/oauth/callback_option"
-        @client.get_access_token(code="C", :redirect_uri => redirect_uri_option)
+        @client.get_auth(code="C", :redirect_uri => redirect_uri_option)
         a_request(:post, @url).
           with(:body => hash_including({:redirect_uri => redirect_uri_option})).
           should have_been_made
@@ -277,7 +277,7 @@ describe Instagram::API do
           expect(output).to include 'DEBUG -- : Response Headers:'
           expect(output).to include "User-Agent : Instagram Ruby Gem #{Instagram::VERSION}"
           expect(output).to include 'http://distillery.s3.amazonaws.com/media/2011/01/31/0f8e832c3dc6420bb6ddf0bd09f032f6_6.jpg'
-          expect(output).to include 'access_token=[ACCESS-TOKEN]'
+          expect(output).to include 'auth=[ACCESS-TOKEN]'
         end
       end
     end

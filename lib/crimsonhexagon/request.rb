@@ -33,8 +33,8 @@ module CrimsonHexagon
         path = formatted_path(path) unless unformatted
 
         if signed == true
-          if access_token != nil
-            sig_options = options.merge({:auth => access_token})
+          if auth != nil
+            sig_options = options.merge({:auth => auth})
           end
         end
 

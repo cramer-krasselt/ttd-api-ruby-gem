@@ -12,10 +12,10 @@ describe Instagram::Request do
 
     context "with signature=true" do
       it "should set X-Insta-Forwarded-For header" do
-        client = Instagram::Client.new(:client_id => "CID", :client_secret => @secret, :client_ips => @ips, :access_token => "AT")
+        client = Instagram::Client.new(:client_id => "CID", :client_secret => @secret, :client_ips => @ips, :auth => "AT")
         url = client.send(:connection).build_url("/media/123/likes.json").to_s
         stub_request(:post, url).
-          with(:body => {"access_token"=>"AT"}).
+          with(:body => {"auth"=>"AT"}).
           to_return(:status => 200, :body => "", :headers => {})
 
         client.post("/media/123/likes", {}, signature=true)
@@ -25,10 +25,10 @@ describe Instagram::Request do
       end
 
       it "should not set X-Insta-Fowarded-For header if client_ips is not provided" do
-        client = Instagram::Client.new(:client_id => "CID", :client_secret => @secret, :access_token => "AT")
+        client = Instagram::Client.new(:client_id => "CID", :client_secret => @secret, :auth => "AT")
         url = client.send(:connection).build_url("/media/123/likes.json").to_s
         stub_request(:post, url).
-          with(:body => {"access_token"=>"AT"}).
+          with(:body => {"auth"=>"AT"}).
           to_return(:status => 200, :body => "", :headers => {})
 
         client.post("/media/123/likes", {}, signature=true)
@@ -40,10 +40,10 @@ describe Instagram::Request do
 
     context "with signature=false" do
       it "should set X-Insta-Forwarded-For header" do
-        client = Instagram::Client.new(:client_id => "CID", :client_secret => @secret, :client_ips => @ips, :access_token => "AT")
+        client = Instagram::Client.new(:client_id => "CID", :client_secret => @secret, :client_ips => @ips, :auth => "AT")
         url = client.send(:connection).build_url("/media/123/likes.json").to_s
         stub_request(:post, url).
-          with(:body => {"access_token"=>"AT"}).
+          with(:body => {"auth"=>"AT"}).
           to_return(:status => 200, :body => "", :headers => {})
 
         client.post("/media/123/likes", {}, signature=false)
