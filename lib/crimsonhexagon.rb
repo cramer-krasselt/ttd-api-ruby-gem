@@ -1,4 +1,5 @@
 require File.expand_path('../crimsonhexagon/error', __FILE__)
+require File.expand_path('../crimsonhexagon/configuration', __FILE__)
 require File.expand_path('../crimsonhexagon/api', __FILE__)
 require File.expand_path('../crimsonhexagon/monitor', __FILE__)
 require File.expand_path('../crimsonhexagon/monitor/facebook', __FILE__)
