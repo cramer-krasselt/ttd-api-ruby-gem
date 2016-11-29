@@ -23,7 +23,7 @@ module CrimsonHexagon
         response
       end
 
-      def page_likes(id, start_date, end_date)
+      def twitter_metrics(id, start_date, end_date)
         response = get("monitor/twittermetrics",
                        id: id,
                        start: start_date,
