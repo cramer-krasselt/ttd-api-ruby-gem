@@ -13,3 +13,5 @@ log/*
 pkg/*
 .idea/*
 test.rb
+*.swp
+*.swo
