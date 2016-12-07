@@ -31,8 +31,8 @@ module FaradayMiddleware
 
       def filter(output)
         if ENV['CRIMSONHEXAGON_GEM_REDACT']
-          output = output.to_s.gsub(/username=[a-zA-Z0-9]*/,'username=[USERNAME]')
-          output = output.to_s.gsub(/auth=[a-zA-Z0-9]*/,'auth=[ACCESS-TOKEN]')
+          output = output.to_s.gsub(/login=[a-zA-Z0-9]*/,'login=[LOGIN]')
+          output = output.to_s.gsub(/token=[a-zA-Z0-9]*/,'token=[ACCESS-TOKEN]')
         else
           output
         end

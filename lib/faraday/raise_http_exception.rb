@@ -8,19 +8,19 @@ module FaradayMiddleware
       @app.call(env).on_complete do |response|
         case response[:status].to_i
         when 400
-          raise CrimsonHexagon::BadRequest, error_message_400(response)
+          raise TTDApi::BadRequest, error_message_400(response)
         when 404
-          raise CrimsonHexagon::NotFound, error_message_400(response)
+          raise TTDApi::NotFound, error_message_400(response)
         when 429
-          raise CrimsonHexagon::TooManyRequests, error_message_400(response)
+          raise TTDApi::TooManyRequests, error_message_400(response)
         when 500
-          raise CrimsonHexagon::InternalServerError, error_message_500(response, "Something is technically wrong.")
+          raise TTDApi::InternalServerError, error_message_500(response, "Something is technically wrong.")
         when 502
-          raise CrimsonHexagon::BadGateway, error_message_500(response, "The server returned an invalid or incomplete response.")
+          raise TTDApi::BadGateway, error_message_500(response, "The server returned an invalid or incomplete response.")
         when 503
-          raise CrimsonHexagon::ServiceUnavailable, error_message_500(response, "CrimsonHexagon is rate limiting your requests.")
+          raise TTDApi::ServiceUnavailable, error_message_500(response, "TTDApi is rate limiting your requests.")
         when 504
-          raise CrimsonHexagon::GatewayTimeout, error_message_500(response, "504 Gateway Time-out")
+          raise TTDApi::GatewayTimeout, error_message_500(response, "504 Gateway Time-out")
         end
       end
     end
