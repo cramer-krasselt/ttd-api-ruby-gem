@@ -36,9 +36,9 @@ module TTDApi
 
         case method
         when :get, :delete
-          request.url(CGI.escape(path), options)
+          request.url(URI.encode(path), options)
         when :post, :put
-          request.path = CGI.escape(path)
+          request.path = URI.encode(path)
           request.body = options.to_json unless options.empty?
         end
       end
